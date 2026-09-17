@@ -1,0 +1,34 @@
+{
+  "summary": "Iteration 2 frontend regression + admin UI (owner session injected via MongoDB user_sessions) FULLY PASSED. Verified: Home/Catalogo (8 wines)/Wine detail/Harmonizar; PWA manifest.json (name=Minha Adega) + /sw.js served 200; Login page renders 'Esqueci minha senha' link; /esqueci-senha shows generic success ('forgot-sent') after submit; /redefinir-senha?token=INVALID shows error message after submit; Register REQUIRES birth_date and blocks users <18 (kept on /login with error toast); adult registration (>=18) succeeds and redirects to /conta; Owner login (mgrodrigues920@gmail.com / SenhaFinal@2026X) does NOT return session — mfa-code + mfa-verify-btn screen renders (MFA challenge as expected); Non-admin visiting /admin is redirected to /; Cart shows 'Frete climatizado (estimativa por regras)' label and cart-birthdate field; Mobile 390x844 bottom nav shows all 5 items (Início/Explorar/Harmonizar/Carrinho/Conta). Admin UI with injected owner session: all 8 tabs present and functional (Visão Geral, Catálogo with variant editor + variant-add-btn, Pedidos, Estoque, Cupons — created and listed dynamic TESTE code, Relatórios with rep-revenue + rep-demo separated, Equipe with staff-panel, Configurações — MP warning displayed when selecting mercadopago_test with unset credentials). Backend security & functional tests already validated in prior iteration/scripts per main agent note; not re-run to avoid interfering with owner MFA state.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "index.html <title>", "issues": ["Document title is still 'Emergent | Fullstack App' — should be 'Minha Adega' for PWA/SEO/tab labeling."]},
+      {"screen": "AuthContext /api/auth/me probe", "issues": ["Continues to emit 401 console noise on every anonymous page load (carried over from iteration 1). Consider swallowing 401 in axios interceptor for the /me probe only."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml (from iter 1)"],
+  "action_items": [
+    "Create /app/auth_testing.md documenting the mongosh session-injection procedure (referenced in test_credentials.md and review request but missing from filesystem).",
+    "Fix /app/frontend/public/index.html <title> to 'Minha Adega' (currently the boilerplate 'Emergent | Fullstack App').",
+    "backend_test.py (iteration 1) is now stale: OWNER_PASSWORD literal is 'Adega@Owner2026' and register payload lacks birth_date — will fail against iteration 2 backend. Main agent should refresh those fixtures if the pytest suite is to run again."
+  ],
+  "critical_code_review_comments": [
+    "server.py has grown to 1187 lines — split into modules (auth, wines, orders, admin, stock, coupons, payments_mp) for maintainability.",
+    "AdminPage.jsx (403 lines) mixes 8 tab sections in one file; extract each tab into its own component under /pages/admin/.",
+    "CartPage.jsx uses browser default type=date input (native picker) — consistent with the rest of the app but not a shadcn Calendar; acceptable given date-only fields.",
+    "server.py:_finish_login returns JWT for customers but session cookie only for Google emergent-session flow — mixed auth model is fine but should be documented; the /account/delete path deletes user_sessions but not JWT (revocation via password_version bump is correct — good).",
+    "CORS allow_origins='*' with allow_credentials=True still present (flagged in iter 1) — browsers reject; relying on allow_origin_regex works but should be cleaned.",
+    "AdminPage.jsx uses window.confirm() for archive/delete_account — replace with themed dialog for consistency (flagged in iter 1)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not re-tested (out of scope per main agent note); iter 1 was 100%", "frontend": "100% (17/17 public + 15/15 admin UI checks)"},
+  "test_credentials": "Owner mgrodrigues920@gmail.com / SenhaFinal@2026X (returns MFA challenge only — never a session). Admin UI reached by injecting a document into db.user_sessions with session_token cookie + user.mfa_enabled=true + matching password_version. Dynamic customers registered per run (birth_date=1990-01-01).",
+  "seed_data_creation": "Created 1 test session token TESTADMIN_* (deleted post-test) and 1 test coupon TESTE##### (deleted post-test). Registered 1 adult customer adulto{ts}@example.com and 0 minor accounts (blocked pre-persist).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "For admin UI: inject session directly into MongoDB `test_database.user_sessions` — required fields: user_id, session_token, pv (== users.password_version), expires_at (ISO). Set cookie 'session_token' with domain of the preview URL, secure=true, httponly=true. Owner user must have mfa_enabled=true (backend require_admin re-checks fresh doc). Ensure to delete session on cleanup. Owner login with SenhaFinal@2026X returns mfa_required (do NOT attempt to complete TOTP). Route paths: /login, /esqueci-senha, /redefinir-senha?token=..., /admin (tabs admin-tab-{resumo,produtos,pedidos,estoque,cupons,relatorios,equipe,config}), /carrinho, /conta.",
+  "rca of the issue": "No functional bugs found in iteration 2. Minor cosmetic: (a) index.html title left as boilerplate 'Emergent | Fullstack App' — one-line fix; (b) /app/auth_testing.md referenced by test_credentials.md and this review is missing — should be authored to document the mongosh session-injection procedure used above."
+}

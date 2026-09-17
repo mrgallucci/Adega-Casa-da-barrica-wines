@@ -1,0 +1,372 @@
+{
+  "project_name": "Minha Adega",
+  "app_type": "hybrid_fullstack",
+  "locale": "pt-BR",
+  "currency": "BRL",
+  "theme_strategy": {
+    "default_mode": "dark",
+    "concept": "Adega Rústica Sofisticada Contemporânea (Warm Cellar Luxury)",
+    "description": "Uma experiência imersiva combinando a profundidade do carvalho tostado, o calor do bordô aveludado e o brilho discreto do cobre escovado sobre pergaminho e ardósia escura. Sensação tátil, cinematográfica e de alta gastronomia."
+  },
+  "typography": {
+    "font_family_heading": "'Playfair Display', 'Cormorant Garamond', serif",
+    "font_family_body": "'Plus Jakarta Sans', 'Inter', sans-serif",
+    "font_family_mono": "'JetBrains Mono', monospace",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight leading-tight",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-serif font-semibold tracking-tight",
+      "h3": "text-xl sm:text-2xl font-serif font-medium",
+      "h4": "text-lg sm:text-xl font-sans font-semibold tracking-wide",
+      "body": "text-sm sm:text-base font-sans text-[#EAE0D5]/90 leading-relaxed",
+      "label_eyebrow": "text-xs uppercase font-mono tracking-[0.2em] text-[#C28D58]"
+    },
+    "rules": [
+      "NUNCA use Inter ou fontes genéricas em H1, H2 e H3; sempre aplique a classe de serifa elegante font-serif com tracking-tight.",
+      "Títulos de garrafas e safras com destaque em itálico sutil para dar ar de carta de vinhos de bistrô de luxo.",
+      "Preços formatados rigorosamente em R$ com números em fonte limpa ou mono suave (ex: R$ 389,00)."
+    ]
+  },
+  "colors": {
+    "palette": {
+      "primary_bordeaux": "#5E1925",
+      "primary_bordeaux_light": "#8A2436",
+      "primary_bordeaux_dark": "#360C14",
+      "wood_dark": "#16120E",
+      "wood_charcoal": "#1C1814",
+      "wood_slate": "#25201B",
+      "copper_gold": "#C28D58",
+      "copper_gold_hover": "#D8A36E",
+      "creme_parchment": "#F4EBE1",
+      "creme_muted": "#D5C7B7",
+      "text_primary": "#F7F2EB",
+      "text_muted": "#A89B8C",
+      "border_cellar": "rgba(194, 141, 88, 0.2)",
+      "border_subtle": "rgba(255, 255, 255, 0.08)",
+      "badge_tannin": "#3B1B15",
+      "badge_acidity": "#2C3524",
+      "badge_sweetness": "#3D2B1F"
+    },
+    "usage_rules": {
+      "background_main": "bg-[#120F0D]",
+      "surface_card": "bg-[#1C1713]/90 backdrop-blur-md border border-[#C28D58]/20 shadow-xl",
+      "cta_primary": "bg-gradient-to-r from-[#8A2436] to-[#5E1925] hover:from-[#9E2A3F] hover:to-[#701E2E] text-[#F7F2EB] shadow-lg shadow-[#5E1925]/30",
+      "cta_copper": "bg-[#C28D58] hover:bg-[#D8A36E] text-[#120F0D] font-medium transition-all duration-200",
+      "border_rules": "Nunca use bordas brancas puras. Use tons de cobre escovado com opacidade (rgba(194,141,88,0.25)) ou bordas escuras acetinadas."
+    }
+  },
+  "visual_enhancers": {
+    "texture": "Subtle oak grain / fine noise overlay (opacity 0.03 to 0.05) to break digital flatness.",
+    "lighting": "Warm radial glow highlights in hero cards: radial-gradient(circle at 50% 0%, rgba(138,36,54,0.18), transparent 70%).",
+    "glassmorphism": "backdrop-blur-xl bg-[#16120E]/80 border border-[#C28D58]/20 with inner highlight.",
+    "bottle_showcase": "Fotografias verticais de garrafas recortadas ou em iluminação de estúdio de adega com sombra de contato dramática ('drop-shadow-[0_25px_25px_rgba(0,0,0,0.65)]')."
+  },
+  "layout_and_navigation": {
+    "desktop_header": {
+      "visible": true,
+      "style": "sticky top-0 z-50 backdrop-blur-xl bg-[#16120E]/90 border-b border-[#C28D58]/20 py-3.5 px-6 sm:px-10",
+      "items": [
+        {"label": "Início", "path": "/"},
+        {"label": "Explorar Vinhos", "path": "/catalogo"},
+        {"label": "Harmonização com IA", "path": "/harmonizar"},
+        {"label": "Adega & Histórias", "path": "/sobre"},
+        {"label": "Painel do Sommelier / Admin", "path": "/admin"}
+      ],
+      "actions": ["SearchModal trigger", "Wishlist toggle", "Cart drawer trigger with counter", "User account menu"]
+    },
+    "mobile_bottom_nav": {
+      "required": true,
+      "style": "md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#16120E]/95 backdrop-blur-xl border-t border-[#C28D58]/25 py-2 px-3 shadow-2xl",
+      "items": [
+        {"label": "Início", "path": "/", "icon": "Home", "testId": "mobile-nav-home"},
+        {"label": "Explorar", "path": "/catalogo", "icon": "Compass", "testId": "mobile-nav-explore"},
+        {"label": "Harmonizar", "path": "/harmonizar", "icon": "Sparkles", "testId": "mobile-nav-sommelier"},
+        {"label": "Carrinho", "path": "/carrinho", "icon": "ShoppingBag", "badge": "cartCount", "testId": "mobile-nav-cart"},
+        {"label": "Minha Conta", "path": "/conta", "icon": "User", "testId": "mobile-nav-account"}
+      ]
+    }
+  },
+  "image_urls": {
+    "hero_cellar": {
+      "category": "Hero / Banner Background",
+      "url": "https://images.unsplash.com/photo-1724882207681-9e7e8c3dd45c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjB3aW5lJTIwYm90dGxlJTIwY2VsbGFyfGVufDB8fHx8MTc4Mjk4Nzk1Mnww&ixlib=rb-4.1.0&q=85",
+      "description": "Corredor nobre de adega subterrânea iluminado com luz âmbar e barris históricos."
+    },
+    "cellar_bottles_wall": {
+      "category": "Collection / Terroir Section",
+      "url": "https://images.unsplash.com/photo-1723013824329-58e636ce9650?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NjV8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjB3aW5lJTIwYm90dGxlJTIwY2VsbGFyfGVufDB8fHx8MTc4Mjk4Nzk1Mnww&ixlib=rb-4.1.0&q=85",
+      "description": "Adega vertical contemporânea com nichos iluminados individualmente exibindo rótulos nobres."
+    },
+    "wine_pouring_decanting": {
+      "category": "Experience / Sommelier Section",
+      "url": "https://images.unsplash.com/photo-1642603436412-11e2e2fc08bb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTF8MHwxfHNlYXJjaHwxfHxyZWQlMjB3aW5lJTIwZ2xhc3MlMjBwb3VyaW5nJTIwb2FrJTIwYmFycmVsfGVufDB8fHx8MTc4OTQwODIwNnww&ixlib=rb-4.1.0&q=85",
+      "description": "Sommelier servindo vinho tinto com decantador de vidro sobre taças de cristal."
+    },
+    "oak_barrel_vintage": {
+      "category": "Tradition / Reserve Section",
+      "url": "https://images.unsplash.com/photo-1642603437398-0a8e30fb93ae?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTF8MHwxfHNlYXJjaHw0fHxyZWQlMjB3aW5lJTIwZ2xhc3MlMjBwb3VyaW5nJTIwb2FrJTIwYmFycmVsfGVufDB8fHx8MTc4OTQwODIwNnww&ixlib=rb-4.1.0&q=85",
+      "description": "Garrafa de vinho reserva sobre barril de carvalho francês autêntico."
+    },
+    "food_pairing_cheese_charcuterie": {
+      "category": "Harmonização / Gourmet",
+      "url": "https://images.unsplash.com/photo-1668094497457-29f4bd775c95?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwyfHxnb3VybWV0JTIwY2hlZXNlJTIwcGxhdHRlciUyMHBhaXJpbmclMjB3aW5lfGVufDB8fHx8MTc4NjU0NDkzMnww&ixlib=rb-4.1.0&q=85",
+      "description": "Tábua de queijos artesanais nobres, uvas maduras e petiscos para harmonização com vinhos."
+    },
+    "vineyard_tasting_table": {
+      "category": "Harmonização / Degustação",
+      "url": "https://images.unsplash.com/photo-1598306442928-4d90f32c6866?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwxfHxnb3VybWV0JTIwY2hlZXNlJTIwcGxhdHRlciUyMHBhaXJpbmclMjB3aW5lfGVufDB8fHx8MTc4NjU0NDkzMnww&ixlib=rb-4.1.0&q=85",
+      "description": "Taças com vinhos tintos e brancos alinhadas em mesa rústica ao entardecer no vinhedo."
+    }
+  },
+  "curated_wine_catalog_seeds": [
+    {
+      "id": "vinho-01",
+      "name": "Château Margaux Grand Vin",
+      "winery": "Château Margaux",
+      "vintage": "2018",
+      "country": "França",
+      "region": "Bordeaux, Médoc",
+      "type": "Tinto",
+      "grapes": ["Cabernet Sauvignon 90%", "Merlot 7%", "Cabernet Franc 2%"],
+      "alcohol": "13.5%",
+      "body": "Encorpado",
+      "sweetness": "Seco",
+      "wood_aging": "24 meses em carvalho francês",
+      "price": 4290.00,
+      "discount_price": 3890.00,
+      "rating": 4.9,
+      "reviews_count": 86,
+      "featured": true,
+      "badge": "Ícone Mundial",
+      "image": "https://images.unsplash.com/photo-1642603437398-0a8e30fb93ae?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "pairing_notes": "Carré de cordeiro com ervas da Provença, carnes maturadas e queijo Comté curado.",
+      "description": "Aroma profundo de groselha preta, violetas, cedro e notas de trufas. Taninos sedosos e final eterno."
+    },
+    {
+      "id": "vinho-02",
+      "name": "Brunello di Montalcino Riserva",
+      "winery": "Biondi-Santi",
+      "vintage": "2016",
+      "country": "Itália",
+      "region": "Toscana",
+      "type": "Tinto",
+      "grapes": ["Sangiovese Grosso 100%"],
+      "alcohol": "14.5%",
+      "body": "Muito Encorpado",
+      "sweetness": "Seco",
+      "wood_aging": "36 meses em tonéis de carvalho da Eslavônia",
+      "price": 1850.00,
+      "discount_price": 1690.00,
+      "rating": 4.8,
+      "reviews_count": 114,
+      "featured": true,
+      "badge": "Safra Histórica 99 Pts",
+      "image": "https://images.unsplash.com/photo-1642603436412-11e2e2fc08bb?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "pairing_notes": "Bife à Fiorentina, risoto de funghi porcini e ossobuco alla milanese.",
+      "description": "Notas vibrantes de cereja silvestre, couro nobre, tabaco e taberna italiana clássica."
+    },
+    {
+      "id": "vinho-03",
+      "name": "AlmaViva Epu Assemblage",
+      "winery": "Viña Almaviva (Rothschild & Concha y Toro)",
+      "vintage": "2020",
+      "country": "Chile",
+      "region": "Valle del Maipo",
+      "type": "Tinto",
+      "grapes": ["Cabernet Sauvignon 78%", "Carmenère 15%", "Cabernet Franc 7%"],
+      "alcohol": "14.8%",
+      "body": "Encorpado",
+      "sweetness": "Seco",
+      "wood_aging": "18 meses em barricas novas",
+      "price": 680.00,
+      "discount_price": 599.00,
+      "rating": 4.7,
+      "reviews_count": 230,
+      "featured": true,
+      "badge": "Mais Desejado",
+      "image": "https://images.unsplash.com/photo-1724882207681-9e7e8c3dd45c?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "pairing_notes": "Picanha grelhada na brasa de angus, costela de fogo de chão e queijos azuis.",
+      "description": "Opulência andina com elegância bordalesa. Cacau, amoras e especiarias doces."
+    },
+    {
+      "id": "vinho-04",
+      "name": "Chablis Premier Cru Fourchaume",
+      "winery": "Domaine Laroche",
+      "vintage": "2021",
+      "country": "França",
+      "region": "Borgonha",
+      "type": "Branco",
+      "grapes": ["Chardonnay 100%"],
+      "alcohol": "12.5%",
+      "body": "Médio / Mineral",
+      "sweetness": "Seco",
+      "wood_aging": "9 meses em cubas de aço e foudres neutros",
+      "price": 540.00,
+      "discount_price": 490.00,
+      "rating": 4.8,
+      "reviews_count": 67,
+      "featured": false,
+      "badge": "Terroir Calcário",
+      "image": "https://images.unsplash.com/photo-1598306442928-4d90f32c6866?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "pairing_notes": "Ostras frescas de Santa Catarina, vieiras grelhadas na manteiga de sálvia e lagosta.",
+      "description": "Mineralidade penetrante de giz e sílex, casca de limão siciliano e maçã verde crocante."
+    },
+    {
+      "id": "vinho-05",
+      "name": "Barolo DOCG Cannubi",
+      "winery": "Marchesi di Barolo",
+      "vintage": "2017",
+      "country": "Itália",
+      "region": "Piemonte",
+      "type": "Tinto",
+      "grapes": ["Nebbiolo 100%"],
+      "alcohol": "14.5%",
+      "body": "Encorpado e Estruturado",
+      "sweetness": "Seco",
+      "wood_aging": "24 meses em carvalho eslavo e francês",
+      "price": 1150.00,
+      "discount_price": 998.00,
+      "rating": 4.9,
+      "reviews_count": 78,
+      "featured": true,
+      "badge": "Rei dos Vinhos",
+      "image": "https://images.unsplash.com/photo-1723013824329-58e636ce9650?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "pairing_notes": "Tagliolini com trufas brancas de Alba, javali estufado e queijo Parmigiano Reggiano 36m.",
+      "description": "Complexidade fascinante de rosas secas, alcatrão, especiarias orientais e alcaçuz."
+    },
+    {
+      "id": "vinho-06",
+      "name": "Catena Zapata Adrianna Vineyard Malbec",
+      "winery": "Catena Zapata",
+      "vintage": "2019",
+      "country": "Argentina",
+      "region": "Mendoza, Gualtallary (1450m)",
+      "type": "Tinto",
+      "grapes": ["Malbec 100%"],
+      "alcohol": "14.2%",
+      "body": "Encorpado",
+      "sweetness": "Seco",
+      "wood_aging": "18 meses em barricas de carvalho francês de grão fino",
+      "price": 1420.00,
+      "discount_price": 1280.00,
+      "rating": 4.95,
+      "reviews_count": 182,
+      "featured": true,
+      "badge": "100 Pts Robert Parker",
+      "image": "https://images.unsplash.com/photo-1642603437398-0a8e30fb93ae?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "pairing_notes": "Ancho grelhado com chimichurri artesanal, morcilla e polenta rústica.",
+      "description": "Floral sedutor de violetas, mirtilo fresco, notas de grafite e textura mineral única."
+    },
+    {
+      "id": "vinho-07",
+      "name": "Veuve Clicquot La Grande Dame",
+      "winery": "Veuve Clicquot Ponsardin",
+      "vintage": "2015",
+      "country": "França",
+      "region": "Champagne",
+      "type": "Espumante",
+      "grapes": ["Pinot Noir 90%", "Chardonnay 10%"],
+      "alcohol": "12.5%",
+      "body": "Médio / Cremoso",
+      "sweetness": "Brut",
+      "wood_aging": "6 anos sobre as borras (sur lie)",
+      "price": 1950.00,
+      "discount_price": 1780.00,
+      "rating": 4.9,
+      "reviews_count": 94,
+      "featured": false,
+      "badge": "Cuvée Prestige",
+      "image": "https://images.unsplash.com/photo-1625922379195-3f891e47eaee?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "pairing_notes": "Caviar Ossetra, blinis quentes com crème fraîche, lagostins e carpaccio de vieiras.",
+      "description": "Perlage finíssima e infindável. Brioche tostado, damasco, amêndoas e acidez cítrica sublime."
+    },
+    {
+      "id": "vinho-08",
+      "name": "Guaspari Vista da Serra Syrah",
+      "winery": "Vinícola Guaspari",
+      "vintage": "2020",
+      "country": "Brasil",
+      "region": "Espírito Santo do Pinhal, SP",
+      "type": "Tinto",
+      "grapes": ["Syrah 100%"],
+      "alcohol": "14.2%",
+      "body": "Médio-Encorpado",
+      "sweetness": "Seco",
+      "wood_aging": "14 meses em carvalho francês",
+      "price": 280.00,
+      "discount_price": 249.00,
+      "rating": 4.75,
+      "reviews_count": 310,
+      "featured": true,
+      "badge": "Orgulho Brasileiro",
+      "image": "https://images.unsplash.com/photo-1642603436412-11e2e2fc08bb?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "pairing_notes": "Pernil de cordeiro assado lentamente com alecrim, massas recheadas ao ragu de carne.",
+      "description": "Expressão magistral de dupla poda no terroir brasileiro: pimenta preta, amoras e café."
+    }
+  ],
+  "sommelier_ai_presets": [
+    {
+      "id": "pairing-carne-vermelha",
+      "dish_name": "Picanha Nobre ou Ancho na Brasa",
+      "flavor_profile": "Gordura rica, proteínas tostadas e sabor marcante",
+      "suggested_wine_ids": ["vinho-03", "vinho-06", "vinho-08"],
+      "sommelier_verdict": "Vinhos com taninos firmes e boa acidez cortam a suntuosidade da carne grelhada, limpando o palato a cada garfada."
+    },
+    {
+      "id": "pairing-massa-queijo",
+      "dish_name": "Risoto Trufado de Cogumelos ou Cordeiro Assado",
+      "flavor_profile": "Terra, umami potente, cremosidade untuosa",
+      "suggested_wine_ids": ["vinho-01", "vinho-02", "vinho-05"],
+      "sommelier_verdict": "A elegância dos grandes vinhos europeus envelhecidos em carvalho traz harmonia terciária irresistível."
+    },
+    {
+      "id": "pairing-frutos-do-mar",
+      "dish_name": "Ostras Frescas, Vieiras ou Moqueca Suave",
+      "flavor_profile": "Salinidade, doçura natural do mar e textura delicada",
+      "suggested_wine_ids": ["vinho-04", "vinho-07"],
+      "sommelier_verdict": "A mineralidade cortante e a efervescência cremosa ressaltam o frescor marinho sem encobrir sua sutileza."
+    }
+  ],
+  "admin_dashboard_architecture": {
+    "role": "Proprietário / Gerente de Adega (Exclusive Access)",
+    "nav_sections": [
+      {"id": "resumo", "label": "Visão Geral da Adega", "icon": "BarChart3"},
+      {"id": "produtos", "label": "Catálogo de Rótulos & Estoque", "icon": "Wine"},
+      {"id": "pedidos", "label": "Pedidos & Entregas Climatizadas", "icon": "Truck"},
+      {"id": "relatorios", "label": "Relatórios Financeiros & Vendas", "icon": "TrendingUp"},
+      {"id": "equipe", "label": "Sommeliers & Funcionários", "icon": "Users"},
+      {"id": "configuracoes", "label": "Configurações da Loja", "icon": "Settings"}
+    ],
+    "key_metrics": [
+      {"label": "Faturamento Mensal", "value": "R$ 148.920,00", "delta": "+18.4% vs mês ant.", "tone": "positive"},
+      {"label": "Garrafas em Adega (Estoque)", "value": "1.428 un.", "alert": "14 rótulos com estoque baixo", "tone": "warning"},
+      {"label": "Ticket Médio", "value": "R$ 624,00", "delta": "+8.2%", "tone": "positive"},
+      {"label": "Consultas IA do Sommelier", "value": "892 este mês", "conversion": "34.2% convertidas em pedido", "tone": "highlight"}
+    ]
+  },
+  "technical_and_ux_rules": {
+    "data_test_ids": {
+      "format": "kebab-case descritivo e estável",
+      "mandatory_elements": [
+        "nav-desktop-home", "nav-desktop-catalog", "nav-desktop-sommelier", "nav-desktop-admin",
+        "btn-add-to-cart", "btn-buy-now", "btn-sommelier-submit", "filter-country-select",
+        "filter-price-slider", "filter-grape-checkbox", "admin-tab-products", "admin-tab-orders",
+        "cart-drawer-toggle", "cart-checkout-btn", "checkout-pay-btn"
+      ]
+    },
+    "surface_styles": {
+      "card_wine": "rounded-2xl bg-[#1A1512]/95 border border-[#C28D58]/20 hover:border-[#C28D58]/60 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:-translate-y-1.5 p-5 flex flex-col justify-between",
+      "card_admin_metric": "rounded-xl bg-[#16120E] border border-[#C28D58]/25 p-5 shadow-lg",
+      "pwa_install_banner": "bg-gradient-to-r from-[#360C14] to-[#1C1814] border border-[#C28D58]/40 text-[#F7F2EB] rounded-2xl p-4 shadow-2xl"
+    },
+    "transitions": "Use specific CSS transitions (transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)). NUNCA aplique transition: all."
+  },
+  "instructions_to_main_agent": [
+    "Construir em React (.js / .jsx) com Tailwind e componentes Shadcn personalizados no tema de adega de luxo.",
+    "Nunca usar fundos transparentes em dropdowns, modals, drawers do carrinho ou barras de navegação; sempre aplicar fundo escuro de carvalho (#16120E) com blur e borda de cobre.",
+    "Implementar o recurso de IA 'Qual vinho combina com meu prato?' com formulário dinâmico (Prato/Ingrediente principal + Ocasião + Faixa de preço) exibindo recomendações instantâneas explicadas pelo Sommelier Virtual.",
+    "Incluir carrinho funcional com gaveta lateral (Drawer), checkout com cálculo de frete climatizado, cupom de boas-vindas ('PRIMEIRAADEGA') e resumo de pagamento por PIX/Cartão.",
+    "Incluir Painel Administrativo completo para o proprietário com abas de Produtos (adicionar/editar preço e safra), Pedidos (mudar status), Relatórios com gráficos Recharts e Gestão de Funcionários/Sommeliers.",
+    "Assegurar navegação mobile inferior fixa com os 5 botões especificados: Início, Explorar, Harmonizar, Carrinho e Minha Conta.",
+    "Adicionar data-testid em todos os botões, links, inputs e itens de catálogo para suporte a testes automatizados."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "summary": "Iteration 3: full backend + admin UI + cart shipping verification. Backend: 33/33 previous tests still pass + 12/12 new iteration 3 tests pass (test_iteration3.py). Late-payment bug fix is correctly implemented end-to-end. Frontend admin UI (owner session injected via mongosh) renders the stock-review resolution panel, clicking 'Baixar estoque e enviar' triggers the prompt(), submits reason, and order transitions to fulfillment_status=preparando with needs_stock_review=false. Frete & Entrega tab lists 2 seeded zones, allows creating a new zone (UITestZone appears in list), delivery-instructions section visible, and cron-runs monitor shows recent release-reservations + backup ok entries. Cart shipping UI: CEP 01310100 -> R$29,90 + shipping-deadline '1 a 3 dias úteis'; CEP 69000000 -> shipping-error 'Ainda não entregamos nesta região...' and cart-checkout-btn is disabled. LoginPage renders mfa-code input (verified via prior iteration). Regression: home/catalog/pairing OK, no horizontal overflow on mobile 390x844 for / and /catalogo.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "index.html <title>", "issues": ["Still boilerplate 'Emergent | Fullstack App' (carried over from iter 2 — not fixed yet)."]},
+      {"screen": "AdminPage.jsx resolveStock", "issues": ["Uses window.prompt() for the reason — functional but inconsistent with the themed design; consider a shadcn Dialog with a textarea for consistency."]},
+      {"screen": "CartPage.jsx date picker", "issues": ["Uses native <input type=\"date\"> — consistent with the app-wide choice; acceptable but noted."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/backend/tests/test_iteration3.py",
+    "/app/test_reports/pytest/iter3.xml"
+  ],
+  "action_items": [
+    "(Cosmetic) Update /app/frontend/public/index.html <title> from 'Emergent | Fullstack App' to 'Minha Adega'.",
+    "(Optional UX) Replace window.prompt() in AdminPage.resolveStock with a themed dialog capturing the reason (multiline)."
+  ],
+  "critical_code_review_comments": [
+    "server.py is now 1378 lines — split urgently into modules (auth, wines, orders/checkout, admin, shipping, cron, lgpd, mp).",
+    "AdminPage.jsx (~495 lines) still mixes all tabs; consider splitting per-tab components under /pages/admin/.",
+    "_mark_paid is idempotent (guarded by payment_status $nin approved/refunded) and the late-payment branch correctly flags needs_stock_review — good.",
+    "/admin/orders/{id}/resolve-stock correctly rolls back partial reservations on 409 (per-item try/rollback with release_stock) — good.",
+    "Shipping table admin CRUD returns 200/404 correctly and public /shipping/zones omits internal fields (cost/reserved) — good.",
+    "Console still emits 401 noise from AuthContext /auth/me probe on anonymous loads (carried from iter 1) — swallow this specific 401 in the axios interceptor."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration3.py (new — 12 tests)"
+  ],
+  "success_rate": {"backend": "100% (45/45: 33 previous + 12 new)", "frontend": "100% (cart shipping OK/blocked + admin frete tab + resolve-stock fulfill flow + mobile overflow)"},
+  "test_credentials": "Owner: mgrodrigues920@gmail.com (login always returns MFA challenge; do not attempt TOTP). Admin UI access: inject session doc directly into test_database.user_sessions with user_sessions.pv matching users.password_version and users.mfa_enabled=true (see /app/auth_testing.md).",
+  "seed_data_creation": "Cleaned up after run: test users (iter3.*, uitest.*, uiadm-*), test sessions (iter3_adm_*, uiadm_sess_*), test shipping zones (UITestZone*, 'Zona Teste *'). Orders created during tests remain in DB (attached to deleted test users) but are irrelevant for future runs.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 3 features are green end-to-end. For a needs_stock_review order in the browser: (a) create an order via POST /api/checkout, (b) mongosh: db.orders.updateOne({order_id:X},{$set:{reservation_active:false, reservation_expires_at: past}}), (c) POST /api/orders/X/confirm-demo — order will show up in /admin > Pedidos with the stock-review panel (data-testid=stock-review-<order_id>). resolveStock uses window.prompt() so Playwright must register page.on('dialog', d=>d.accept('reason')) before clicking resolve-fulfill/resolve-refund. Cart storage key: 'minha_adega_cart_v1' (not adega_cart).",
+  "rca of the issue": "N/A — the late-payment bug fix described in the request is correctly implemented. Idempotent _mark_paid atomically approves the order, and when reservation_active is false at approval time the order is flagged needs_stock_review=true + fulfillment_status='revisao_estoque'. Admin /admin/orders/{id}/resolve-stock enforces the pending-review + approved invariants and either performs a transactional stock reservation+convert (returning 409 on insufficient stock, with rollback of already-reserved items) or marks refunded/cancelled. All 4 branches (mark-review, fulfill-ok, fulfill-409, refund) covered by test_iteration3.py."
+}

@@ -1,0 +1,37 @@
+{
+  "summary": "Iteration 4 end-to-end verification of all four fixes passed 6/6 UI+API. (1) Refund two-phase: 'Reembolsar' click on stock-review order transitioned payment_status=approved -> refund_requested (NOT refunded) with refund.status=requested; refund-pending-{order_id} panel + refund-confirm-{order_id} button rendered as specified; second call to /admin/orders/{id}/resolve-stock returned 200 with idempotent note ('Reembolso já está em andamento (requested) — nenhuma nova operação criada.') and did NOT duplicate the refund record; 'Confirmar estorno' click finalized to payment_status=refunded, refund.status=confirmed, refund.confirmed_at set, and 'Reembolsado em ...' confirmation line rendered. (2) Sales suspension: settings-sales-status=Suspensas + Salvar propagated to /api/settings; on /carrinho the sales-suspended-banner is visible with the correct copy and cart-checkout-btn is disabled; POST /api/checkout returns 403 with the suspension message; reverting to open restores normal flow. (3) Unconfirmed zones: after unconfirming zone_sp_capital via admin/shipping upsert, cart quote for CEP 01310100 renders shipping-error 'Ainda não entregamos nesta região...'; clicking zone-confirm-zone_sp_capital in admin Frete tab sets confirmed=true and cart then quotes R$ 3.919,90 with shipping-deadline '1 a 3 dias úteis'. (4) Backups: backup-list visible in Frete tab with at least one entry, backup-verify-{id} button click produces success indication mentioning 'Restauração' (verify-restore endpoint responded). Regression: register→checkout→confirm-demo→GET /orders end-to-end works (order appears in customer's list). Mobile 390x844 shows no horizontal overflow on /, /catalogo, /carrinho. Final DB state left clean: sales_status=open, zone_sp_capital.confirmed=true; test users/sessions cleaned up.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "AdminPage.jsx resolveStock (refund reason capture)", "issues": ["Still uses window.prompt() to collect the refund reason — functional but inconsistent with the rest of the themed UI. Consider a shadcn Dialog + textarea (carried over from iter 3)."]},
+      {"screen": "index.html <title>", "issues": ["Still 'Emergent | Fullstack App' (carried over from iter 2/3)."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/backend/tests/test_iteration3.py"
+  ],
+  "action_items": [
+    "(Cosmetic) Replace window.prompt() in AdminPage.resolveStock with a themed modal (carry-over).",
+    "(Cosmetic) Update /app/frontend/public/index.html <title> to 'Minha Adega' (carry-over)."
+  ],
+  "critical_code_review_comments": [
+    "server.py is now ~1508 lines — still no split; strongly recommend modularizing (auth, catalog, orders/checkout, admin, shipping, backups, cron) before adding more features.",
+    "resolve-stock 'refund' branch is correctly idempotent (guards on refund.status in requested/processing/confirmed) and only transitions payment_status to refund_requested on the first call; /admin/orders/{id}/refund/confirm is the ONLY code path that flips to refunded and dispatches the send_order_cancelled email — great two-phase design.",
+    "Customer notification (send_order_cancelled) is correctly dispatched only from refund/confirm, satisfying the 'email only after Confirmar estorno' requirement.",
+    "/checkout sales_status guard placed BEFORE mutation (line 830), so it does not affect webhooks or already-created orders — correct.",
+    "Public /shipping/zones filters by confirmed:true (line 766, 775) — unconfirmed seed zones cannot be used until owner confirms, as specified.",
+    "AdminPage.jsx is now ~553 lines mixing 8 tabs — consider splitting per-tab components under /pages/admin/.",
+    "The admin/shipping POST upsert accepts arbitrary boolean 'confirmed' from the payload, which means a staff member could theoretically POST the zone with confirmed:true to bypass the owner-only confirmation. Consider forcing confirmed=false on new-zone upserts and requiring an owner-only PATCH for the confirmed flag (defense-in-depth)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (regression + all iter4 endpoints)", "frontend": "100% (refund two-phase + suspension banner + zone confirm + backup verify + mobile overflow)"},
+  "test_credentials": "Owner: mgrodrigues920@gmail.com (MFA required — cannot log in via automation). Admin UI: inject user_sessions doc with pv matching users.password_version and users.mfa_enabled=true (see /app/auth_testing.md).",
+  "seed_data_creation": "Created and cleaned up: test admin user 'iter4-adm-*', test admin session 'test_adm_session_iter4_*', test customers 'iter4cust*', 'iter4buyer*', 'buy*', 'reg*'. Order ord_55e97e22232d (used to exercise refund two-phase) and ord_ae22006f08fe (regression checkout) remain in DB attached to deleted test users — irrelevant for future runs. Final state: sales_status=open, zone_sp_capital.confirmed=true (as required by the note).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All iter4 features are green. Playwright notes for iter5: (a) admin session injection works via cookie 'session_token' on the preview domain (httpOnly:false in playwright works fine because backend accepts the cookie regardless of the HttpOnly attribute); Bearer with the raw session token does NOT work — always use fetch({credentials:'include'}) after add_cookies. (b) resolveStock uses window.prompt() so register page.on('dialog', d=>d.accept('reason')) before clicking. (c) Cart is client-side (localStorage 'minha_adega_cart_v1'); seed it directly to test cart-page states without going through a product page. (d) Admin tab testids: admin-tab-{resumo|produtos|pedidos|estoque|frete|cupons|relatorios|equipe|config}. (e) Sales-status select testid is settings-sales-status (not admin-sales-status). (f) To unconfirm a zone via API use POST /api/admin/shipping (upsert) with confirmed:false, not the missing PUT endpoint.",
+  "rca of the issue": "N/A — no defects found. Two-phase refund correctly separates request (payment_status=refund_requested, no customer notification) from confirmation (payment_status=refunded, send_order_cancelled dispatched). Idempotency is enforced by checking refund.status ∈ {requested, processing, confirmed} before creating a new refund record. Sales suspension is enforced only on POST /checkout (line 830) leaving webhooks/admin/refund paths unaffected. Unconfirmed zones are filtered out of the public /shipping/zones and /checkout quote paths, blocking new orders until owner confirmation."
+}

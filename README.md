@@ -2,7 +2,7 @@
 
 Plataforma web para uma adega de vinhos, com catálogo, carrinho, gestão de pedidos, clube de assinaturas e recursos de inteligência artificial para harmonização e atendimento.
 
-Projeto desenvolvido por **Maxwell Gallucci Rodrigues**, com apoio do **Emergent** na criação e evolução do código.
+Projeto desenvolvido por **Maxwell Gallucci Rodrigues**
 
 > **Status:** em desenvolvimento e validação. O funcionamento das integrações depende da configuração dos serviços externos. Este repositório não representa uma certificação de prontidão para produção.
 
